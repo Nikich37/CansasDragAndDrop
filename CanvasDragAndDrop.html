@@ -1,0 +1,24 @@
+<!doctype html>
+<html style="height: 100%;">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Canvas Drag and Drop Test</title>
+</head>
+
+<body style="height: 100%;">
+    <canvas id="canvas">
+        <p>This text is displayed if your browser does not support HTML5 Canvas.<p>
+    </canvas>
+    <script type="text/javascript">
+        const WIDTH = document.body.clientWidth;
+        const HEIGHT = document.body.clientHeight;
+        const canvas = document.getElementById("canvas");
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
+        const context = canvas.getContext("2d");
+
+    </script>
+</body>
+
+</html>
