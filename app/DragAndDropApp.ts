@@ -1,4 +1,5 @@
 import { Point, Shape } from './Shapes.js';
+import {ShapesFabric} from './ShapesFabric.js'
 
 class DragAndDropApp{
     
@@ -18,14 +19,13 @@ class DragAndDropApp{
       let canvas = document.getElementById('canvas') as
                   HTMLCanvasElement;
       let context = canvas.getContext("2d");
+      let shapesFabric: ShapesFabric = new ShapesFabric;
 
       this.shapes = [
-          new Shape([new Point(100, 100), new Point(200,200), 
-              new Point(100, 200)]),
-          new Shape([new Point(100, 250), new Point(300,250), 
-              new Point(300, 400), new Point (100, 400)]),
-          new Shape([new Point(100, 450), new Point(300,520), 
-              new Point(300, 550), new Point (200, 535), new Point (100, 570)])
+        shapesFabric.CreateTriangle(150, 100, 100, 100),
+        shapesFabric.CreateRectangle(100, 250, 150, 200),
+        shapesFabric.CreatePolygon([new Point(100, 450), new Point(300,520), 
+          new Point(300, 550), new Point (200, 535), new Point (100, 570)])
       ]
 
       this.indexDragShape = -1;

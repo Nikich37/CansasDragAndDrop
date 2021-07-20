@@ -1,12 +1,15 @@
-import { Point, Shape } from './Shapes.js';
+import { Point } from './Shapes.js';
+import { ShapesFabric } from './ShapesFabric.js';
 var DragAndDropApp = /** @class */ (function () {
     function DragAndDropApp() {
         var canvas = document.getElementById('canvas');
-        var context = canvas.getContext('2d');
+        var context = canvas.getContext("2d");
+        var shapesFabric = new ShapesFabric;
         this.shapes = [
-            new Shape([new Point(100, 100), new Point(200, 200), new Point(100, 200)]),
-            new Shape([new Point(100, 250), new Point(300, 250), new Point(300, 400), new Point(100, 400)]),
-            new Shape([new Point(100, 450), new Point(300, 520), new Point(300, 550), new Point(200, 535), new Point(100, 570)]),
+            shapesFabric.CreateTriangle(150, 100, 100, 100),
+            shapesFabric.CreateRectangle(100, 250, 150, 200),
+            shapesFabric.CreatePolygon([new Point(100, 450), new Point(300, 520),
+                new Point(300, 550), new Point(200, 535), new Point(100, 570)])
         ];
         this.indexDragShape = -1;
         this.drag = false;
@@ -31,7 +34,8 @@ var DragAndDropApp = /** @class */ (function () {
                     this.indexesShapesFilled.push(index);
                     flagIsShape = true;
                 }
-                else if (!flagIsShape && this.indexesShapesFilled.indexOf(i) == -1) {
+                else if (!flagIsShape &&
+                    this.indexesShapesFilled.indexOf(i) == -1) {
                     this.shapes[i].IsFill = false;
                 }
             }
@@ -68,9 +72,12 @@ var DragAndDropApp = /** @class */ (function () {
             var shape = value;
             var j = shape.points.length - 1;
             for (var i = 0; i < shape.points.length; i++) {
-                if (indexShape != index &&
-                    ((shape.points[i].y < y && shape.points[j].y >= y) || (shape.points[j].y < y && shape.points[i].y >= y)) &&
-                    shape.points[i].x + ((y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y)) * (shape.points[j].x - shape.points[i].x) < x) {
+                if ((indexShape != index) && (shape.points[i].y < y &&
+                    shape.points[j].y >= y || shape.points[j].y < y &&
+                    shape.points[i].y >= y) &&
+                    (shape.points[i].x + (y - shape.points[i].y) /
+                        (shape.points[j].y - shape.points[i].y) *
+                        (shape.points[j].x - shape.points[i].x) < x)) {
                     result = !result;
                 }
                 j = i;
@@ -91,9 +98,12 @@ var DragAndDropApp = /** @class */ (function () {
             var shape = value;
             var j = shape.points.length - 1;
             for (var i = 0; i < shape.points.length; i++) {
-                if (indexShape != index &&
-                    ((shape.points[i].y < y && shape.points[j].y >= y) || (shape.points[j].y < y && shape.points[i].y >= y)) &&
-                    shape.points[i].x + ((y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y)) * (shape.points[j].x - shape.points[i].x) < x) {
+                if ((indexShape != index) && (shape.points[i].y < y &&
+                    shape.points[j].y >= y || shape.points[j].y < y &&
+                    shape.points[i].y >= y) &&
+                    (shape.points[i].x + (y - shape.points[i].y) /
+                        (shape.points[j].y - shape.points[i].y) *
+                        (shape.points[j].x - shape.points[i].x) < x)) {
                     result = !result;
                 }
                 j = i;
@@ -113,8 +123,11 @@ var DragAndDropApp = /** @class */ (function () {
             var shape = value;
             var j = shape.points.length - 1;
             for (var i = 0; i < shape.points.length; i++) {
-                if (((shape.points[i].y < y && shape.points[j].y >= y) || (shape.points[j].y < y && shape.points[i].y >= y)) &&
-                    shape.points[i].x + ((y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y)) * (shape.points[j].x - shape.points[i].x) < x) {
+                if ((shape.points[i].y < y && shape.points[j].y >= y ||
+                    shape.points[j].y < y && shape.points[i].y >= y) &&
+                    (shape.points[i].x + (y - shape.points[i].y) /
+                        (shape.points[j].y - shape.points[i].y) *
+                        (shape.points[j].x - shape.points[i].x) < x)) {
                     result = !result;
                 }
                 j = i;
@@ -134,8 +147,11 @@ var DragAndDropApp = /** @class */ (function () {
             var shape = value;
             var j = shape.points.length - 1;
             for (var i = 0; i < shape.points.length; i++) {
-                if (((shape.points[i].y < y && shape.points[j].y >= y) || (shape.points[j].y < y && shape.points[i].y >= y)) &&
-                    shape.points[i].x + ((y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y)) * (shape.points[j].x - shape.points[i].x) < x) {
+                if ((shape.points[i].y < y && shape.points[j].y >= y ||
+                    shape.points[j].y < y && shape.points[i].y >= y) &&
+                    (shape.points[i].x + (y - shape.points[i].y) /
+                        (shape.points[j].y - shape.points[i].y) *
+                        (shape.points[j].x - shape.points[i].x) < x)) {
                     result = !result;
                 }
                 j = i;
@@ -150,7 +166,7 @@ var DragAndDropApp = /** @class */ (function () {
     DragAndDropApp.prototype.createUserEvents = function () {
         var _this = this;
         var canvas = this.canvas;
-        canvas.addEventListener('mousedown', function (e) {
+        canvas.addEventListener("mousedown", function (e) {
             _this.x = e.pageX - _this.canvas.offsetLeft;
             _this.y = e.pageY - _this.canvas.offsetTop;
             if (_this.drag == false) {
@@ -163,26 +179,30 @@ var DragAndDropApp = /** @class */ (function () {
                 _this.oldPoints = _this.shapes[_this.indexDragShape].points;
             }
         });
-        canvas.addEventListener('mousemove', function (e) {
+        canvas.addEventListener("mousemove", function (e) {
             if (_this.drag) {
                 _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
                 _this.x = e.pageX - _this.canvas.offsetLeft;
                 _this.y = e.pageY - _this.canvas.offsetTop;
                 for (var i = 0; i < _this.shapes[_this.indexDragShape].points.length; i++) {
-                    _this.shapes[_this.indexDragShape].points[i].x = _this.oldPoints[i].x + _this.x - _this.oldX;
-                    _this.shapes[_this.indexDragShape].points[i].y = _this.oldPoints[i].y + _this.y - _this.oldY;
+                    _this.shapes[_this.indexDragShape].points[i].x = _this.oldPoints[i].x +
+                        _this.x - _this.oldX;
+                    _this.shapes[_this.indexDragShape].points[i].y = _this.oldPoints[i].y +
+                        _this.y - _this.oldY;
                 }
                 _this.oldX = _this.x;
                 _this.oldY = _this.y;
                 _this.redraw(_this.context);
             }
         });
-        canvas.addEventListener('mouseup', function (e) {
+        canvas.addEventListener("mouseup", function (e) {
             if (_this.drag) {
                 _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
                 for (var i = 0; i < _this.shapes[_this.indexDragShape].points.length; i++) {
-                    _this.shapes[_this.indexDragShape].points[i].x = _this.oldPoints[i].x + _this.x - _this.oldX;
-                    _this.shapes[_this.indexDragShape].points[i].y = _this.oldPoints[i].y + _this.y - _this.oldY;
+                    _this.shapes[_this.indexDragShape].points[i].x = _this.oldPoints[i].x +
+                        _this.x - _this.oldX;
+                    _this.shapes[_this.indexDragShape].points[i].y = _this.oldPoints[i].y +
+                        _this.y - _this.oldY;
                 }
                 _this.updateStatusShapes();
                 _this.redraw(_this.context);
