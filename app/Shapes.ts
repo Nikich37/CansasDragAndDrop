@@ -21,7 +21,7 @@ class Point{
   }
 }
 
-class Shape{
+abstract class Shape{
   private _points: Point[];
   private _IsFill: boolean;
 
@@ -40,4 +40,25 @@ class Shape{
       this._IsFill = false;
   }
 }
-export { Point, Shape };
+
+class Triangle extends Shape{
+    shapeType: string = "Triangle";
+    constructor(points: Point[]){
+        super(points);
+    }
+}
+
+class Rectangle extends Shape{
+    shapeType: string = "Rectangle";
+    constructor(points: Point[]){
+        super(points);
+    }
+}
+
+class Polygon extends Shape{
+    shapeType: string = "Polygon";
+    constructor(points: Point[]){
+        super(points);
+    }
+}
+export { Point, Shape, Rectangle, Triangle, Polygon };
