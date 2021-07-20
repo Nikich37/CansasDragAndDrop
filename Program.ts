@@ -1,33 +1,56 @@
+
+//import {DragAndDropApp} from "./DragAndDropApp"
+
 class Point{
-    public x: number;
-    public y: number;
+    private _x: number;
+    private _y: number;
+
+    get x(){
+        return this._x;
+    }
+    get y(){
+        return this._y;
+    }
+    set x(value){
+        this._x = value;
+    }
+    set y(value){
+        this._y = value;
+    }
 
     constructor(x: number, y: number){
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
     }
 }
 
 class Shape{
-    public points: Point[];
-    public IsFill: boolean;
+    private _points: Point[];
+    private _IsFill: boolean;
 
-    constructor(points: Point[]){
-        this.points = points;
-        this.IsFill = false;
+    get points(){
+        return this._points;
+    }
+    get IsFill(){
+        return this._IsFill;
+    }
+    set IsFill(bool){
+        this._IsFill = bool;
     }
 
-    
+    constructor(points: Point[]){
+        this._points = points;
+        this._IsFill = false;
+    }
 }
 
-
 class DragAndDropApp{
+    
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
     private drag: boolean;
     private shapes: Shape[];
     private oldPoints: Point[];
-
     private indexesShapesFilled: number[];
     private indexDragShape: number;
     private x: number;
@@ -41,9 +64,12 @@ class DragAndDropApp{
         let context = canvas.getContext("2d");
 
         this.shapes = [
-            new Shape([new Point(100, 100), new Point(200,200), new Point(100, 200)]),
-            new Shape([new Point(100, 250), new Point(300,250), new Point(300, 400), new Point (100, 400)]),
-            new Shape([new Point(100, 450), new Point(300,520), new Point(300, 550), new Point (200, 535), new Point (100, 570)])
+            new Shape([new Point(100, 100), new Point(200,200), 
+                new Point(100, 200)]),
+            new Shape([new Point(100, 250), new Point(300,250), 
+                new Point(300, 400), new Point (100, 400)]),
+            new Shape([new Point(100, 450), new Point(300,520), 
+                new Point(300, 550), new Point (200, 535), new Point (100, 570)])
         ]
 
         this.indexDragShape = -1;
@@ -64,15 +90,18 @@ class DragAndDropApp{
             let flagIsShape: boolean = false;
             
             for (let j = 0; j < this.shapes[i].points.length; j++){
-                if (this.IsPointInShape(this.shapes[i].points[j].x, this.shapes[i].points[j].y, i)){
+                if (this.IsPointInShape(this.shapes[i].points[j].x, 
+                    this.shapes[i].points[j].y, i)){
 
-                    let index = this.InWhichShape(this.shapes[i].points[j].x, this.shapes[i].points[j].y, i);
+                    let index = this.InWhichShape(this.shapes[i].points[j].x, 
+                        this.shapes[i].points[j].y, i);
                     this.shapes[i].IsFill = true;
                     this.shapes[index].IsFill = true;
                     this.indexesShapesFilled.push(index);
                     flagIsShape = true;
                 }
-                else if (!flagIsShape && this.indexesShapesFilled.indexOf(i) == -1){
+                else if (!flagIsShape && 
+                    this.indexesShapesFilled.indexOf(i) == -1){
                     this.shapes[i].IsFill = false;
                 }
             }
@@ -101,7 +130,8 @@ class DragAndDropApp{
             context.closePath();
         });
     }
-    public IsPointInShape(x: number, y: number, indexShape: number){
+
+    private IsPointInShape(x: number, y: number, indexShape: number){
         let result: boolean = false;
         let finalResult = false;
         let index = 0;
@@ -110,8 +140,12 @@ class DragAndDropApp{
             let shape: Shape = value;
             let j: number = shape.points.length - 1;
             for (let i: number = 0; i < shape.points.length; i++) {
-                if ( (indexShape != index) && (shape.points[i].y < y && shape.points[j].y >= y || shape.points[j].y < y && shape.points[i].y >= y) &&
-                (shape.points[i].x + (y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y) * (shape.points[j].x - shape.points[i].x) < x) ){
+                if ( (indexShape != index) && (shape.points[i].y < y && 
+                    shape.points[j].y >= y || shape.points[j].y < y && 
+                    shape.points[i].y >= y) &&
+                (shape.points[i].x + (y - shape.points[i].y) / 
+                (shape.points[j].y - shape.points[i].y) * 
+                (shape.points[j].x - shape.points[i].x) < x) ){
                 result = !result;
                 }
                 j = i;
@@ -124,7 +158,7 @@ class DragAndDropApp{
         return finalResult;
     }
 
-    public InWhichShape(x: number, y: number, indexShape: number){
+    private InWhichShape(x: number, y: number, indexShape: number){
         let result: boolean = false;
         let index: number = 0;
         let finalIndex: number = 0;
@@ -133,8 +167,12 @@ class DragAndDropApp{
             let shape: Shape = value;
             let j: number = shape.points.length - 1;
             for (let i: number = 0; i < shape.points.length; i++) {
-                if ( (indexShape != index) && (shape.points[i].y < y && shape.points[j].y >= y || shape.points[j].y < y && shape.points[i].y >= y) &&
-                (shape.points[i].x + (y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y) * (shape.points[j].x - shape.points[i].x) < x) ){
+                if ( (indexShape != index) && (shape.points[i].y < y && 
+                    shape.points[j].y >= y || shape.points[j].y < y && 
+                    shape.points[i].y >= y) &&
+                (shape.points[i].x + (y - shape.points[i].y) / 
+                (shape.points[j].y - shape.points[i].y) * 
+                (shape.points[j].x - shape.points[i].x) < x) ){
                 result = !result;
                 }
                 j = i;
@@ -147,7 +185,7 @@ class DragAndDropApp{
         return finalIndex;
     }
 
-    public IsShape(x: number, y: number): boolean{
+    private IsShape(x: number, y: number): boolean{
         let result: boolean = false;
         let finalResult = false;
         this.shapes.forEach(function (value){
@@ -155,8 +193,11 @@ class DragAndDropApp{
             let shape: Shape = value;
             let j: number = shape.points.length - 1;
             for (let i: number = 0; i < shape.points.length; i++) {
-                if ( (shape.points[i].y < y && shape.points[j].y >= y || shape.points[j].y < y && shape.points[i].y >= y) &&
-                (shape.points[i].x + (y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y) * (shape.points[j].x - shape.points[i].x) < x) ){
+                if ( (shape.points[i].y < y && shape.points[j].y >= y || 
+                    shape.points[j].y < y && shape.points[i].y >= y) &&
+                (shape.points[i].x + (y - shape.points[i].y) / 
+                (shape.points[j].y - shape.points[i].y) * 
+                (shape.points[j].x - shape.points[i].x) < x) ){
                 result = !result;
                 }
                 j = i;
@@ -168,7 +209,7 @@ class DragAndDropApp{
         return finalResult;
     }
 
-    public WhichShape(x: number, y: number): number{
+    private WhichShape(x: number, y: number): number{
         let result: boolean = false;
         let index: number = 0;
         let finalIndex: number = 0;
@@ -177,8 +218,11 @@ class DragAndDropApp{
             let shape: Shape = value;
             let j: number = shape.points.length - 1;
             for (let i: number = 0; i < shape.points.length; i++) {
-                if ( (shape.points[i].y < y && shape.points[j].y >= y || shape.points[j].y < y && shape.points[i].y >= y) &&
-                (shape.points[i].x + (y - shape.points[i].y) / (shape.points[j].y - shape.points[i].y) * (shape.points[j].x - shape.points[i].x) < x) ){
+                if ( (shape.points[i].y < y && shape.points[j].y >= y || 
+                    shape.points[j].y < y && shape.points[i].y >= y) &&
+                (shape.points[i].x + (y - shape.points[i].y) / 
+                (shape.points[j].y - shape.points[i].y) * 
+                (shape.points[j].x - shape.points[i].x) < x) ){
                 result = !result;
                 }
                 j = i;
@@ -216,8 +260,10 @@ class DragAndDropApp{
                 this.x = e.pageX - this.canvas.offsetLeft;
                 this.y = e.pageY - this.canvas.offsetTop;
                 for (let i = 0; i < this.shapes[this.indexDragShape].points.length; i++){
-                this.shapes[this.indexDragShape].points[i].x = this.oldPoints[i].x + this.x - this.oldX;
-                this.shapes[this.indexDragShape].points[i].y = this.oldPoints[i].y + this.y - this.oldY;
+                this.shapes[this.indexDragShape].points[i].x = this.oldPoints[i].x + 
+                this.x - this.oldX;
+                this.shapes[this.indexDragShape].points[i].y = this.oldPoints[i].y + 
+                this.y - this.oldY;
                 }
                 this.oldX = this.x;
                 this.oldY = this.y;
@@ -231,8 +277,10 @@ class DragAndDropApp{
             if (this.drag){
                 this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 for (let i = 0; i < this.shapes[this.indexDragShape].points.length; i++){
-                    this.shapes[this.indexDragShape].points[i].x = this.oldPoints[i].x + this.x - this.oldX;
-                    this.shapes[this.indexDragShape].points[i].y = this.oldPoints[i].y + this.y - this.oldY;
+                    this.shapes[this.indexDragShape].points[i].x = this.oldPoints[i].x + 
+                    this.x - this.oldX;
+                    this.shapes[this.indexDragShape].points[i].y = this.oldPoints[i].y + 
+                    this.y - this.oldY;
                 }
                 this.updateStatusShapes();
                 this.redraw(this.context);
@@ -244,7 +292,6 @@ class DragAndDropApp{
                 this.drag = false;
             }
         });
-    
     }
 }
 
