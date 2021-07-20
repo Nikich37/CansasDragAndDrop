@@ -1,6 +1,3 @@
-"use strict";
-exports.__esModule = true;
-exports.Shape = exports.Point = void 0;
 var Point = /** @class */ (function () {
     function Point(x, y) {
         this.x = x;
@@ -8,7 +5,6 @@ var Point = /** @class */ (function () {
     }
     return Point;
 }());
-exports.Point = Point;
 var Shape = /** @class */ (function () {
     function Shape(points) {
         this.points = points;
@@ -16,4 +12,4 @@ var Shape = /** @class */ (function () {
     }
     return Shape;
 }());
-exports.Shape = Shape;
+export { Point, Shape };
