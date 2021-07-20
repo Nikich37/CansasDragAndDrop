@@ -1,2 +1,2 @@
-# DrapAndDrop
+# DragAndDrop
 Test task
