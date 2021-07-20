@@ -93,6 +93,7 @@ class DragAndDropApp{
             if (shape.IsFill == true){
                 context.fillStyle = '#FF0000';
                 context.fill();
+                context.stroke();
                 }
             else{
                 context.stroke();
