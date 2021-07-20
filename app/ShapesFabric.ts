@@ -7,7 +7,7 @@ class ShapesFabric{
         let lowerPointY: number = upperPointY + height;
         let rectangle: Shape = new Shape([new Point(leftPointX, upperPointY), 
         new Point(rightPointX, upperPointY), new Point(rightPointX, lowerPointY),
-        new Point(leftPointX, upperPointY)]);
+        new Point(leftPointX, lowerPointY)]);
         return rectangle;
     }
 

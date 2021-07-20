@@ -7,7 +7,7 @@ var ShapesFabric = /** @class */ (function () {
         var lowerPointY = upperPointY + height;
         var rectangle = new Shape([new Point(leftPointX, upperPointY),
             new Point(rightPointX, upperPointY), new Point(rightPointX, lowerPointY),
-            new Point(leftPointX, upperPointY)]);
+            new Point(leftPointX, lowerPointY)]);
         return rectangle;
     };
     ShapesFabric.prototype.CreateTriangle = function (upperPointX, upperPointY, height, base) {
