@@ -1,6 +1,6 @@
-import { Shape } from './Shape.js';
-import { Point } from './Point.js'
-import {ShapesFabric} from './ShapesFabric.js'
+import { Shape } from './geometric-shapes/Shape.js';
+import { Point } from './geometric-shapes/Point.js'
+import {ShapesFabric} from './geometric-shapes/ShapesFabric.js'
 import {Utils} from './Utils.js';
 
 class DragAndDropApp{
