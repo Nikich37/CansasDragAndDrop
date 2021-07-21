@@ -1,8 +1,11 @@
-import { Shape, Point, Triangle, Rectangle, Polygon } from "./Shapes.js";
+import {Point} from './Point.js'
+import { Polygon } from "./Polygon.js";
+import { Rectangle } from "./Rectangle.js"
 
 class ShapesFabric{
-    public CreateRectangle(leftPointX: number, upperPointY: number, 
-    height: number, weight: number): Rectangle{
+    public CreateRectangle( weight: number, height: number): Rectangle{
+        let leftPointX: number = 0;
+        let upperPointY: number = 0;
         let rightPointX: number = leftPointX + weight;
         let lowerPointY: number = upperPointY + height;
         let rectangle: Rectangle = new Rectangle([new Point(leftPointX, upperPointY), 
@@ -11,17 +14,7 @@ class ShapesFabric{
         return rectangle;
     }
 
-    public CreateTriangle(upperPointX: number, upperPointY: number, 
-        height: number, base: number): Shape{
-        let leftPointX: number = upperPointX - base/2;
-        let rightPointX: number = upperPointX + base/2;
-        let lowerPointY: number = upperPointY + height;
-        let triangle: Triangle = new Triangle([new Point(upperPointX, upperPointY),
-        new Point(rightPointX, lowerPointY), new Point(leftPointX, lowerPointY)]);
-        return triangle;
-    }
-
-    public CreatePolygon(points: Point[]): Shape{
+    public CreatePolygon(points: Point[]): Polygon{
         let polygon: Polygon = new Polygon(points);
         return polygon;
     }

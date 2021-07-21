@@ -1,5 +1,7 @@
-import { Point, Shape } from './Shapes.js';
+import { Shape } from './Shape.js';
+import { Point } from './Point.js'
 import {ShapesFabric} from './ShapesFabric.js'
+import {Utils} from './Utils.js';
 
 class DragAndDropApp{
     
@@ -22,12 +24,16 @@ class DragAndDropApp{
       let shapesFabric: ShapesFabric = new ShapesFabric;
 
       this.shapes = [
-        shapesFabric.CreateTriangle(150, 100, 100, 100),
-        shapesFabric.CreateRectangle(100, 250, 150, 200),
+        shapesFabric.CreateRectangle(50, 50),
+        shapesFabric.CreateRectangle(100, 100),
+        shapesFabric.CreateRectangle(150, 150),
+        shapesFabric.CreatePolygon([new Point(100, 450), new Point(300,520), 
+          new Point(300, 550), new Point (200, 535), new Point (100, 570)]),
         shapesFabric.CreatePolygon([new Point(100, 450), new Point(300,520), 
           new Point(300, 550), new Point (200, 535), new Point (100, 570)])
       ]
-
+      this.makeShapesFreely();
+      
       this.indexDragShape = -1;
       this.drag = false;
       this.x = 0;
@@ -37,8 +43,31 @@ class DragAndDropApp{
       this.canvas = canvas;
       this.context = context;
       this.indexesShapesFilled = [];
+
       this.redraw(context);
       this.createUserEvents();
+  }
+
+  private makeShapesFreely(){
+      let lastLowerPointY: number = 50;
+      let leftSidePointX: number = 50;
+      let deltaY: number = 0;
+      let deltaX: number = 0;
+      
+      for (let i = 0; i < this.shapes.length; i++){
+        let upperPointY = Utils.findUpperPointY(this.shapes[i].points);
+        let leftPointX = Utils.findLeftPointX(this.shapes[i].points);
+        deltaY = upperPointY - lastLowerPointY;
+        deltaX = leftPointX - leftSidePointX;
+
+        for (let j = 0; j < this.shapes[i].points.length; j++){
+            this.shapes[i].points[j].y -= deltaY;
+            this.shapes[i].points[j].x -= deltaX;
+        }
+        lastLowerPointY = Utils.findLowerPointY(this.shapes[i].points) + 20;
+
+      }
+
   }
 
   private updateStatusShapes(){

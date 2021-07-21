@@ -1,25 +1,21 @@
-import { Shape, Point } from "./Shapes.js";
+import { Point } from './Point.js';
+import { Polygon } from "./Polygon.js";
+import { Rectangle } from "./Rectangle.js";
 var ShapesFabric = /** @class */ (function () {
     function ShapesFabric() {
     }
-    ShapesFabric.prototype.CreateRectangle = function (leftPointX, upperPointY, height, weight) {
+    ShapesFabric.prototype.CreateRectangle = function (weight, height) {
+        var leftPointX = 0;
+        var upperPointY = 0;
         var rightPointX = leftPointX + weight;
         var lowerPointY = upperPointY + height;
-        var rectangle = new Shape([new Point(leftPointX, upperPointY),
+        var rectangle = new Rectangle([new Point(leftPointX, upperPointY),
             new Point(rightPointX, upperPointY), new Point(rightPointX, lowerPointY),
             new Point(leftPointX, lowerPointY)]);
         return rectangle;
     };
-    ShapesFabric.prototype.CreateTriangle = function (upperPointX, upperPointY, height, base) {
-        var leftPointX = upperPointX - base / 2;
-        var rightPointX = upperPointX + base / 2;
-        var lowerPointY = upperPointY + height;
-        var triangle = new Shape([new Point(upperPointX, upperPointY),
-            new Point(rightPointX, lowerPointY), new Point(leftPointX, lowerPointY)]);
-        return triangle;
-    };
     ShapesFabric.prototype.CreatePolygon = function (points) {
-        var polygon = new Shape(points);
+        var polygon = new Polygon(points);
         return polygon;
     };
     return ShapesFabric;

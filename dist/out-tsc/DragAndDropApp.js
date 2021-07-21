@@ -1,16 +1,21 @@
-import { Point } from './Shapes.js';
+import { Point } from './Point.js';
 import { ShapesFabric } from './ShapesFabric.js';
+import { Utils } from './Utils.js';
 var DragAndDropApp = /** @class */ (function () {
     function DragAndDropApp() {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
         var shapesFabric = new ShapesFabric;
         this.shapes = [
-            shapesFabric.CreateTriangle(150, 100, 100, 100),
-            shapesFabric.CreateRectangle(100, 250, 150, 200),
+            shapesFabric.CreateRectangle(50, 50),
+            shapesFabric.CreateRectangle(100, 100),
+            shapesFabric.CreateRectangle(150, 150),
+            shapesFabric.CreatePolygon([new Point(100, 450), new Point(300, 520),
+                new Point(300, 550), new Point(200, 535), new Point(100, 570)]),
             shapesFabric.CreatePolygon([new Point(100, 450), new Point(300, 520),
                 new Point(300, 550), new Point(200, 535), new Point(100, 570)])
         ];
+        this.makeShapesFreely();
         this.indexDragShape = -1;
         this.drag = false;
         this.x = 0;
@@ -23,6 +28,23 @@ var DragAndDropApp = /** @class */ (function () {
         this.redraw(context);
         this.createUserEvents();
     }
+    DragAndDropApp.prototype.makeShapesFreely = function () {
+        var lastLowerPointY = 50;
+        var leftSidePointX = 50;
+        var deltaY = 0;
+        var deltaX = 0;
+        for (var i = 0; i < this.shapes.length; i++) {
+            var upperPointY = Utils.findUpperPointY(this.shapes[i].points);
+            var leftPointX = Utils.findLeftPointX(this.shapes[i].points);
+            deltaY = upperPointY - lastLowerPointY;
+            deltaX = leftPointX - leftSidePointX;
+            for (var j = 0; j < this.shapes[i].points.length; j++) {
+                this.shapes[i].points[j].y -= deltaY;
+                this.shapes[i].points[j].x -= deltaX;
+            }
+            lastLowerPointY = Utils.findLowerPointY(this.shapes[i].points) + 20;
+        }
+    };
     DragAndDropApp.prototype.updateStatusShapes = function () {
         for (var i = 0; i < this.shapes.length; i++) {
             var flagIsShape = false;
