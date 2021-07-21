@@ -1,5 +1,5 @@
-import { Point } from './Point.js';
-import { ShapesFabric } from './ShapesFabric.js';
+import { Point } from './geometric-shapes/Point.js';
+import { ShapesFabric } from './geometric-shapes/ShapesFabric.js';
 import { Utils } from './Utils.js';
 var DragAndDropApp = /** @class */ (function () {
     function DragAndDropApp() {
@@ -66,23 +66,7 @@ var DragAndDropApp = /** @class */ (function () {
     };
     DragAndDropApp.prototype.redraw = function (context) {
         this.shapes.forEach(function (value) {
-            var shape = value;
-            context.beginPath();
-            context.moveTo(shape.points[0].x, shape.points[0].y);
-            shape.points.forEach(function (value) {
-                var point = value;
-                context.lineTo(point.x, point.y);
-            });
-            context.lineTo(shape.points[0].x, shape.points[0].y);
-            if (shape.IsFill == true) {
-                context.fillStyle = '#FF0000';
-                context.fill();
-                context.stroke();
-            }
-            else {
-                context.stroke();
-            }
-            context.closePath();
+            value.drawShape(context);
         });
     };
     DragAndDropApp.prototype.IsPointInShape = function (x, y, indexShape) {

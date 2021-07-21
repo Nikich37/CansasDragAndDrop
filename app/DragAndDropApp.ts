@@ -96,23 +96,7 @@ class DragAndDropApp{
 
   private redraw(context: CanvasRenderingContext2D){
       this.shapes.forEach(function (value){
-          let shape: Shape = value;
-          context.beginPath();
-          context.moveTo(shape.points[0].x, shape.points[0].y);
-          shape.points.forEach(function(value){
-                  let point: Point = value;
-                  context.lineTo(point.x, point.y);
-              });
-          context.lineTo(shape.points[0].x, shape.points[0].y);
-          if (shape.IsFill == true){
-              context.fillStyle = '#FF0000';
-              context.fill();
-              context.stroke();
-              }
-          else{
-              context.stroke();
-          }
-          context.closePath();
+          value.drawShape(context);
       });
   }
 

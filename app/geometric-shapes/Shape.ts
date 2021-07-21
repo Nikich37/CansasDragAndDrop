@@ -8,6 +8,10 @@ abstract class Shape{
       this.points = points;
       this.IsFill = false;
   }
+
+  public drawShape(context: CanvasRenderingContext2D){
+    
+  }
 }
 
 export {Shape};

@@ -4,19 +4,27 @@ import {Utils} from '../Utils.js';
 
 class Rectangle extends Shape{
     shapeType: string = "Rectangle";
-    private getPoints(weight: number, height: number): Point[]{
-        let leftPointX: number = 0;
-        let upperPointY: number = 0;
-        let rightPointX: number = leftPointX + weight;
-        let lowerPointY: number = upperPointY + height;
-        let points = [new Point(leftPointX, upperPointY), 
-        new Point(rightPointX, upperPointY), new Point(rightPointX, lowerPointY),
-        new Point(leftPointX, lowerPointY)];
-        return points;
+
+    constructor(width: number, height: number){
+        super(Utils.getPointsForRectangle(width, height));
     }
 
-    constructor(weight: number, height: number){
-        super(Utils.getPointsForRectangle(weight, height));
+    public drawShape(context: CanvasRenderingContext2D){
+        let width: number = Utils.findRightPointX(this.points) - 
+        Utils.findLeftPointX(this.points);
+        let height: number = Utils.findLowerPointY(this.points) -
+        Utils.findUpperPointY(this.points);
+        if (this.IsFill){
+            context.fillStyle = '#FF0000';
+            context.fillRect(Utils.findLeftPointX(this.points), 
+            Utils.findUpperPointY(this.points), width, height);
+            context.strokeRect(Utils.findLeftPointX(this.points), 
+            Utils.findUpperPointY(this.points), width, height);
+        }
+        else{
+            context.strokeRect(Utils.findLeftPointX(this.points), 
+            Utils.findUpperPointY(this.points), width, height);
+        }
     }
 }
 
