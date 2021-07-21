@@ -25,7 +25,7 @@ var DragAndDropApp = /** @class */ (function () {
         this.canvas = canvas;
         this.context = context;
         this.indexesShapesFilled = [];
-        this.redraw(context);
+        this.draw();
         this.createUserEvents();
     }
     DragAndDropApp.prototype.makeShapesFreely = function () {
@@ -63,11 +63,6 @@ var DragAndDropApp = /** @class */ (function () {
             }
         }
         this.indexesShapesFilled = [];
-    };
-    DragAndDropApp.prototype.redraw = function (context) {
-        this.shapes.forEach(function (value) {
-            value.drawShape(context);
-        });
     };
     DragAndDropApp.prototype.IsPointInShape = function (x, y, indexShape) {
         var result = false;
@@ -169,57 +164,69 @@ var DragAndDropApp = /** @class */ (function () {
         });
         return finalIndex;
     };
+    DragAndDropApp.prototype.draw = function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        var context = this.context;
+        this.shapes.forEach(function (value) {
+            value.drawShape(context);
+        });
+    };
     DragAndDropApp.prototype.createUserEvents = function () {
-        var _this = this;
         var canvas = this.canvas;
-        canvas.addEventListener("mousedown", function (e) {
-            _this.x = e.pageX - _this.canvas.offsetLeft;
-            _this.y = e.pageY - _this.canvas.offsetTop;
-            if (_this.drag == false) {
-                _this.oldX = e.pageX - _this.canvas.offsetLeft;
-                _this.oldY = e.pageY - _this.canvas.offsetTop;
-            }
-            if (_this.IsShape(_this.x, _this.y) && _this.drag == false) {
-                _this.drag = true;
-                _this.indexDragShape = _this.WhichShape(_this.x, _this.y);
-                _this.oldPoints = _this.shapes[_this.indexDragShape].points;
-            }
-        });
-        canvas.addEventListener("mousemove", function (e) {
-            if (_this.drag) {
-                _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
-                _this.x = e.pageX - _this.canvas.offsetLeft;
-                _this.y = e.pageY - _this.canvas.offsetTop;
-                for (var i = 0; i < _this.shapes[_this.indexDragShape].points.length; i++) {
-                    _this.shapes[_this.indexDragShape].points[i].x = _this.oldPoints[i].x +
-                        _this.x - _this.oldX;
-                    _this.shapes[_this.indexDragShape].points[i].y = _this.oldPoints[i].y +
-                        _this.y - _this.oldY;
+        var self = this;
+        function redraw() {
+            if (self.drag) {
+                for (var i = 0; i < self.shapes[self.indexDragShape].points.length; i++) {
+                    self.shapes[self.indexDragShape].points[i].x = self.oldPoints[i].x +
+                        self.x - self.oldX;
+                    self.shapes[self.indexDragShape].points[i].y = self.oldPoints[i].y +
+                        self.y - self.oldY;
                 }
-                _this.oldX = _this.x;
-                _this.oldY = _this.y;
-                _this.redraw(_this.context);
+                self.oldX = self.x;
+                self.oldY = self.y;
+                console.log("redraw");
+                self.draw();
+                self.requestRedrawId = requestAnimationFrame(redraw);
             }
-        });
-        canvas.addEventListener("mouseup", function (e) {
-            if (_this.drag) {
-                _this.context.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
-                for (var i = 0; i < _this.shapes[_this.indexDragShape].points.length; i++) {
-                    _this.shapes[_this.indexDragShape].points[i].x = _this.oldPoints[i].x +
-                        _this.x - _this.oldX;
-                    _this.shapes[_this.indexDragShape].points[i].y = _this.oldPoints[i].y +
-                        _this.y - _this.oldY;
+        }
+        canvas.onmousedown = function (e) {
+            self.x = e.pageX - self.canvas.offsetLeft;
+            self.y = e.pageY - self.canvas.offsetTop;
+            self.oldX = e.pageX - self.canvas.offsetLeft;
+            self.oldY = e.pageY - self.canvas.offsetTop;
+            if (self.IsShape(self.x, self.y)) {
+                self.drag = true;
+                self.indexDragShape = self.WhichShape(self.x, self.y);
+                self.oldPoints = self.shapes[self.indexDragShape].points;
+            }
+            canvas.onmousemove = function (e) {
+                self.x = e.pageX - self.canvas.offsetLeft;
+                self.y = e.pageY - self.canvas.offsetTop;
+            };
+            redraw();
+        };
+        canvas.onmouseup = function (e) {
+            canvas.onmousemove = null;
+            if (self.drag) {
+                for (var i = 0; i < self.shapes[self.indexDragShape].points.length; i++) {
+                    self.shapes[self.indexDragShape].points[i].x = self.oldPoints[i].x +
+                        self.x - self.oldX;
+                    self.shapes[self.indexDragShape].points[i].y = self.oldPoints[i].y +
+                        self.y - self.oldY;
                 }
-                _this.updateStatusShapes();
-                _this.redraw(_this.context);
-                _this.x = 0;
-                _this.y = 0;
-                _this.oldX = 0;
-                _this.oldY = 0;
-                _this.indexDragShape = -1;
-                _this.drag = false;
+                self.drag = false;
             }
-        });
+            self.updateStatusShapes();
+            self.draw();
+            self.x = 0;
+            self.y = 0;
+            self.oldX = 0;
+            self.oldY = 0;
+            self.indexDragShape = -1;
+            if (self.requestRedrawId) {
+                cancelAnimationFrame(self.requestRedrawId);
+            }
+        };
     };
     return DragAndDropApp;
 }());
