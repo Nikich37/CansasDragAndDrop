@@ -1,7 +1,6 @@
 import { Shape } from './geometric-shapes/Shape.js';
 import { Point } from './geometric-shapes/Point.js'
 import { ShapesFabric } from './geometric-shapes/ShapesFabric.js'
-import { Utils } from './Utils.js';
 
 class DragAndDropApp {
 
@@ -74,60 +73,6 @@ class DragAndDropApp {
         for (let i = 0; i < this.shapes.length; i++) {
             this.shapes[i].updateStatusShape(this.shapes);
         }
-    }
-
-    private IsPointInShape(x: number, y: number, indexShape: number) {
-        let result: boolean = false;
-        let finalResult = false;
-        let index = 0;
-        this.shapes.forEach(function (value) {
-            result = false;
-            let shape: Shape = value;
-            let j: number = shape.points.length - 1;
-            for (let i: number = 0; i < shape.points.length; i++) {
-                if ((indexShape != index) && (shape.points[i].y < y &&
-                    shape.points[j].y >= y || shape.points[j].y < y &&
-                    shape.points[i].y >= y) &&
-                    (shape.points[i].x + (y - shape.points[i].y) /
-                        (shape.points[j].y - shape.points[i].y) *
-                        (shape.points[j].x - shape.points[i].x) < x)) {
-                    result = !result;
-                }
-                j = i;
-            }
-            if (result) {
-                finalResult = true;
-            }
-            index++;
-        });
-        return finalResult;
-    }
-
-    private InWhichShape(x: number, y: number, indexShape: number) {
-        let result: boolean = false;
-        let index: number = 0;
-        let finalIndex: number = 0;
-        this.shapes.forEach(function (value) {
-            result = false;
-            let shape: Shape = value;
-            let j: number = shape.points.length - 1;
-            for (let i: number = 0; i < shape.points.length; i++) {
-                if ((indexShape != index) && (shape.points[i].y < y &&
-                    shape.points[j].y >= y || shape.points[j].y < y &&
-                    shape.points[i].y >= y) &&
-                    (shape.points[i].x + (y - shape.points[i].y) /
-                        (shape.points[j].y - shape.points[i].y) *
-                        (shape.points[j].x - shape.points[i].x) < x)) {
-                    result = !result;
-                }
-                j = i;
-            }
-            if (result) {
-                finalIndex = index;
-            }
-            index++;
-        });
-        return finalIndex;
     }
 
     private IsShape(x: number, y: number): boolean {

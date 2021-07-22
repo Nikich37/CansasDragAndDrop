@@ -1,6 +1,5 @@
 import { Point } from './Point.js';
 import { Shape } from './Shape.js';
-import { Utils } from '../Utils';
 
 class Circle extends Shape {
     private radius: number;
