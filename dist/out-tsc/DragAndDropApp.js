@@ -1,19 +1,19 @@
+import { Shape } from './geometric-shapes/Shape.js';
 import { Point } from './geometric-shapes/Point.js';
 import { ShapesFabric } from './geometric-shapes/ShapesFabric.js';
-import { Utils } from './Utils.js';
 var DragAndDropApp = /** @class */ (function () {
     function DragAndDropApp() {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
         var shapesFabric = new ShapesFabric;
+        Shape.counterShapes = 0;
         this.shapes = [
             shapesFabric.CreateRectangle(50, 50),
-            shapesFabric.CreateRectangle(100, 100),
+            shapesFabric.CreateCircle(50),
             shapesFabric.CreateRectangle(150, 150),
+            shapesFabric.CreateCircle(100),
             shapesFabric.CreatePolygon([new Point(100, 450), new Point(300, 520),
                 new Point(300, 550), new Point(200, 535), new Point(100, 570)]),
-            shapesFabric.CreatePolygon([new Point(100, 450), new Point(300, 520),
-                new Point(300, 550), new Point(200, 535), new Point(100, 570)])
         ];
         this.makeShapesFreely();
         this.indexDragShape = -1;
@@ -24,7 +24,6 @@ var DragAndDropApp = /** @class */ (function () {
         this.oldY = 0;
         this.canvas = canvas;
         this.context = context;
-        this.indexesShapesFilled = [];
         this.draw();
         this.createUserEvents();
     }
@@ -34,35 +33,21 @@ var DragAndDropApp = /** @class */ (function () {
         var deltaY = 0;
         var deltaX = 0;
         for (var i = 0; i < this.shapes.length; i++) {
-            var upperPointY = Utils.findUpperPointY(this.shapes[i].points);
-            var leftPointX = Utils.findLeftPointX(this.shapes[i].points);
+            var upperPointY = this.shapes[i].upperPointY();
+            var leftPointX = this.shapes[i].leftPointX();
             deltaY = upperPointY - lastLowerPointY;
             deltaX = leftPointX - leftSidePointX;
             for (var j = 0; j < this.shapes[i].points.length; j++) {
                 this.shapes[i].points[j].y -= deltaY;
                 this.shapes[i].points[j].x -= deltaX;
             }
-            lastLowerPointY = Utils.findLowerPointY(this.shapes[i].points) + 20;
+            lastLowerPointY = this.shapes[i].lowerPointY() + 20;
         }
     };
     DragAndDropApp.prototype.updateStatusShapes = function () {
         for (var i = 0; i < this.shapes.length; i++) {
-            var flagIsShape = false;
-            for (var j = 0; j < this.shapes[i].points.length; j++) {
-                if (this.IsPointInShape(this.shapes[i].points[j].x, this.shapes[i].points[j].y, i)) {
-                    var index = this.InWhichShape(this.shapes[i].points[j].x, this.shapes[i].points[j].y, i);
-                    this.shapes[i].IsFill = true;
-                    this.shapes[index].IsFill = true;
-                    this.indexesShapesFilled.push(index);
-                    flagIsShape = true;
-                }
-                else if (!flagIsShape &&
-                    this.indexesShapesFilled.indexOf(i) == -1) {
-                    this.shapes[i].IsFill = false;
-                }
-            }
+            this.shapes[i].updateStatusShape(this.shapes);
         }
-        this.indexesShapesFilled = [];
     };
     DragAndDropApp.prototype.IsPointInShape = function (x, y, indexShape) {
         var result = false;
@@ -122,17 +107,7 @@ var DragAndDropApp = /** @class */ (function () {
         this.shapes.forEach(function (value) {
             result = false;
             var shape = value;
-            var j = shape.points.length - 1;
-            for (var i = 0; i < shape.points.length; i++) {
-                if ((shape.points[i].y < y && shape.points[j].y >= y ||
-                    shape.points[j].y < y && shape.points[i].y >= y) &&
-                    (shape.points[i].x + (y - shape.points[i].y) /
-                        (shape.points[j].y - shape.points[i].y) *
-                        (shape.points[j].x - shape.points[i].x) < x)) {
-                    result = !result;
-                }
-                j = i;
-            }
+            result = shape.isInShape(x, y);
             if (result) {
                 finalResult = true;
             }
@@ -146,17 +121,7 @@ var DragAndDropApp = /** @class */ (function () {
         this.shapes.forEach(function (value) {
             result = false;
             var shape = value;
-            var j = shape.points.length - 1;
-            for (var i = 0; i < shape.points.length; i++) {
-                if ((shape.points[i].y < y && shape.points[j].y >= y ||
-                    shape.points[j].y < y && shape.points[i].y >= y) &&
-                    (shape.points[i].x + (y - shape.points[i].y) /
-                        (shape.points[j].y - shape.points[i].y) *
-                        (shape.points[j].x - shape.points[i].x) < x)) {
-                    result = !result;
-                }
-                j = i;
-            }
+            result = shape.isInShape(x, y);
             if (result) {
                 finalIndex = index;
             }
@@ -184,7 +149,6 @@ var DragAndDropApp = /** @class */ (function () {
                 }
                 self.oldX = self.x;
                 self.oldY = self.y;
-                console.log("redraw");
                 self.draw();
                 self.requestRedrawId = requestAnimationFrame(redraw);
             }
@@ -196,6 +160,10 @@ var DragAndDropApp = /** @class */ (function () {
             self.oldY = e.pageY - self.canvas.offsetTop;
             if (self.IsShape(self.x, self.y)) {
                 self.drag = true;
+                self.indexDragShape = self.WhichShape(self.x, self.y);
+                var shape = self.shapes[self.indexDragShape];
+                self.shapes.splice(self.indexDragShape, 1);
+                self.shapes.push(shape);
                 self.indexDragShape = self.WhichShape(self.x, self.y);
                 self.oldPoints = self.shapes[self.indexDragShape].points;
             }

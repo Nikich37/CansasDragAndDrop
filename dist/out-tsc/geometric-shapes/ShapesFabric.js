@@ -1,5 +1,6 @@
 import { Polygon } from "./Polygon.js";
 import { Rectangle } from "./Rectangle.js";
+import { Circle } from './Circle.js';
 var ShapesFabric = /** @class */ (function () {
     function ShapesFabric() {
     }
@@ -9,6 +10,9 @@ var ShapesFabric = /** @class */ (function () {
     ShapesFabric.prototype.CreatePolygon = function (points) {
         var polygon = new Polygon(points);
         return polygon;
+    };
+    ShapesFabric.prototype.CreateCircle = function (radius) {
+        return new Circle(radius);
     };
     return ShapesFabric;
 }());
