@@ -4,16 +4,26 @@ import { Rectangle } from "./Rectangle.js"
 import { Circle } from './Circle.js';
 
 class ShapesFabric{
+
+    private shapesCounter: number;
+
+    constructor(){
+        this.shapesCounter = 0;
+    }
+
     public CreateRectangle( weight: number, height: number): Rectangle{
-        return new Rectangle(weight, height);
+        this.shapesCounter++;
+        return new Rectangle(this.shapesCounter, weight, height);
     }
 
     public CreatePolygon(points: Point[]): Polygon{
-        return new Polygon(points);
+        this.shapesCounter++;
+        return new Polygon(this.shapesCounter, points);
     }
 
     public CreateCircle(radius: number): Circle{
-        return new Circle(radius);
+        this.shapesCounter++;
+        return new Circle(this.shapesCounter, radius);
     }
 }
 

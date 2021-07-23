@@ -22,7 +22,6 @@ class DragAndDropApp {
         let context = canvas.getContext("2d");
         let shapesFabric: ShapesFabric = new ShapesFabric;
 
-        Shape.counterShapes = 0;
         this.shapes = [
             shapesFabric.CreateRectangle(50, 50),
             shapesFabric.CreateCircle(50),
@@ -79,7 +78,7 @@ class DragAndDropApp {
         this.shapes.forEach(function (value) {
             result = false;
             let shape: Shape = value;
-            result = shape.isInShape(x, y);
+            result = shape.contains(x, y);
             if (result) {
                 finalResult = true;
             }
@@ -94,7 +93,7 @@ class DragAndDropApp {
         this.shapes.forEach(function (value) {
             result = false;
             let shape: Shape = value;
-            result = shape.isInShape(x, y);
+            result = shape.contains(x, y);
             if (result) {
                 finalIndex = index;
             }
@@ -107,7 +106,7 @@ class DragAndDropApp {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         let context = this.context;
         this.shapes.forEach(function (value) {
-            value.drawShape(context);
+            value.draw(context);
         });
     }
 

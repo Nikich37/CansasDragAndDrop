@@ -1,4 +1,3 @@
-import { Shape } from './geometric-shapes/Shape.js';
 import { Point } from './geometric-shapes/Point.js';
 import { ShapesFabric } from './geometric-shapes/ShapesFabric.js';
 var DragAndDropApp = /** @class */ (function () {
@@ -6,7 +5,6 @@ var DragAndDropApp = /** @class */ (function () {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
         var shapesFabric = new ShapesFabric;
-        Shape.counterShapes = 0;
         this.shapes = [
             shapesFabric.CreateRectangle(50, 50),
             shapesFabric.CreateCircle(50),
@@ -55,7 +53,7 @@ var DragAndDropApp = /** @class */ (function () {
         this.shapes.forEach(function (value) {
             result = false;
             var shape = value;
-            result = shape.isInShape(x, y);
+            result = shape.contains(x, y);
             if (result) {
                 finalResult = true;
             }
@@ -69,7 +67,7 @@ var DragAndDropApp = /** @class */ (function () {
         this.shapes.forEach(function (value) {
             result = false;
             var shape = value;
-            result = shape.isInShape(x, y);
+            result = shape.contains(x, y);
             if (result) {
                 finalIndex = index;
             }
@@ -81,7 +79,7 @@ var DragAndDropApp = /** @class */ (function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         var context = this.context;
         this.shapes.forEach(function (value) {
-            value.drawShape(context);
+            value.draw(context);
         });
     };
     DragAndDropApp.prototype.createUserEvents = function () {

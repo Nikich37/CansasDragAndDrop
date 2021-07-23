@@ -1,13 +1,14 @@
 import { Point } from './Point.js';
 import { Shape } from './Shape.js';
+import { Utils } from '../Utils.js';
 
 class Polygon extends Shape {
 
-    constructor(points: Point[]) {
-        super("Polygon", points);
+    constructor(shapeId: number, points: Point[]) {
+        super(shapeId, points);
     }
 
-    public drawShape(context: CanvasRenderingContext2D) {
+    public draw(context: CanvasRenderingContext2D) {
         context.beginPath();
         context.moveTo(this.points[0].x, this.points[0].y);
         this.points.forEach(function (value) {
@@ -15,69 +16,28 @@ class Polygon extends Shape {
             context.lineTo(point.x, point.y);
         });
         context.lineTo(this.points[0].x, this.points[0].y);
-        if (this.isFill == true) {
-            context.fillStyle = '#FF0000';
-            context.fill();
-            context.stroke();
-        }
-        else {
-            context.stroke();
+        context.stroke();
+        if (this.isFill) {
+            this.fill(context);
         }
         context.closePath();
     }
 
-    public isInShape(x: number, y: number): boolean {
-        let result: boolean = false;
-        let j: number = this.points.length - 1;
-        for (let i: number = 0; i < this.points.length; i++) {
-            if ((this.points[i].y < y && this.points[j].y > y ||
-                this.points[j].y < y && this.points[i].y > y) &&
-                (this.points[i].x + (y - this.points[i].y) /
-                    (this.points[j].y - this.points[i].y) *
-                    (this.points[j].x - this.points[i].x) < x)) {
-                result = !result;
-            }
-            j = i;
-        }
-        return result;
+    public contains(x: number, y: number): boolean {
+        return Utils.isInPolygon(this.points, x, y);
     }
 
     public upperPointY(): number {
-        let upperPointY: number = this.points[0].y;
-        for (let i = 0; i < this.points.length; i++){
-            if (upperPointY > this.points[i].y){
-                upperPointY = this.points[i].y;
-            }
-        }
-        return upperPointY;
+        return Utils.pointsUpperY(this.points);
     }
     public leftPointX(): number {
-        let leftPointX: number = this.points[0].x;
-        for (let i = 0; i < this.points.length; i++){
-            if (leftPointX > this.points[i].x){
-                leftPointX = this.points[i].x;
-            }
-        }
-        return leftPointX;
+        return Utils.pointsLeftX(this.points);
     }
     public lowerPointY(): number {
-        let lowerPointY: number = this.points[0].y;
-        for (let i = 0; i < this.points.length; i++) {
-            if (lowerPointY < this.points[i].y) {
-                lowerPointY = this.points[i].y;
-            }
-        }
-        return lowerPointY;
+        return Utils.pointsLowerY(this.points);
     }
     public rightPointX(): number {
-        let rightPointX: number = this.points[0].x;
-        rightPointX.toFixed
-        for (let i = 0; i < this.points.length; i++){
-            if (rightPointX < this.points[i].x){
-                rightPointX = this.points[i].x;
-            }
-        }
-        return rightPointX;
+        return Utils.pointsRightX(this.points);
     }
 
     public getPointsForUpdateStatus(): Point[]{

@@ -15,38 +15,39 @@ var __extends = (this && this.__extends) || (function () {
 })();
 import { Point } from './Point.js';
 import { Shape } from './Shape.js';
+import { Utils } from '../Utils.js';
 var Circle = /** @class */ (function (_super) {
     __extends(Circle, _super);
-    function Circle(radius) {
-        var _this = _super.call(this, "Circle", [new Point(0, 0)]) || this;
+    function Circle(shapeId, radius) {
+        var _this = _super.call(this, shapeId, [new Point(0, 0)]) || this;
         _this.radius = radius;
         return _this;
     }
-    Circle.prototype.drawShape = function (context) {
+    Circle.prototype.draw = function (context) {
         context.beginPath();
         context.arc(this.points[0].x, this.points[0].y, this.radius, 0, 2 * Math.PI, false);
+        context.stroke();
         if (this.isFill) {
-            context.fillStyle = '#FF0000';
-            context.fill();
-            context.stroke();
+            this.fill(context);
         }
-        else {
-            context.stroke();
-        }
+        context.closePath();
     };
-    Circle.prototype.isInShape = function (x, y) {
-        var result = false;
-        var deltaX = x - this.points[0].x;
-        var deltaY = y - this.points[0].y;
-        if (Math.sqrt(deltaX * deltaX + deltaY * deltaY) < this.radius) {
-            result = true;
-        }
-        return result;
+    Circle.prototype.contains = function (x, y) {
+        return Utils.isInCircle(this.points, this.radius, x, y);
     };
-    Circle.prototype.upperPointY = function () { return this.points[0].y - this.radius; };
-    Circle.prototype.leftPointX = function () { return this.points[0].x - this.radius; };
-    Circle.prototype.lowerPointY = function () { return this.points[0].y + this.radius; };
-    Circle.prototype.rightPointX = function () { return this.points[0].x + this.radius; };
+    Circle.prototype.upperPointY = function () {
+        return Utils.circleUpperY(this.points, this.radius);
+    };
+    Circle.prototype.leftPointX = function () {
+        return Utils.circleLeftX(this.points, this.radius);
+    };
+    Circle.prototype.lowerPointY = function () {
+        return Utils.circleLowerY(this.points, this.radius);
+    };
+    Circle.prototype.rightPointX = function () {
+        return Utils.circleRightX(this.points, this.radius);
+        ;
+    };
     Circle.prototype.getPointsForUpdateStatus = function () {
         var points = [];
         for (var i = 0; i < 32; i++) {

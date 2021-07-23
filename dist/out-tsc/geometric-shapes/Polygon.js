@@ -15,12 +15,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 import { Point } from './Point.js';
 import { Shape } from './Shape.js';
+import { Utils } from '../Utils.js';
 var Polygon = /** @class */ (function (_super) {
     __extends(Polygon, _super);
-    function Polygon(points) {
-        return _super.call(this, "Polygon", points) || this;
+    function Polygon(shapeId, points) {
+        return _super.call(this, shapeId, points) || this;
     }
-    Polygon.prototype.drawShape = function (context) {
+    Polygon.prototype.draw = function (context) {
         context.beginPath();
         context.moveTo(this.points[0].x, this.points[0].y);
         this.points.forEach(function (value) {
@@ -28,67 +29,26 @@ var Polygon = /** @class */ (function (_super) {
             context.lineTo(point.x, point.y);
         });
         context.lineTo(this.points[0].x, this.points[0].y);
-        if (this.isFill == true) {
-            context.fillStyle = '#FF0000';
-            context.fill();
-            context.stroke();
-        }
-        else {
-            context.stroke();
+        context.stroke();
+        if (this.isFill) {
+            this.fill(context);
         }
         context.closePath();
     };
-    Polygon.prototype.isInShape = function (x, y) {
-        var result = false;
-        var j = this.points.length - 1;
-        for (var i = 0; i < this.points.length; i++) {
-            if ((this.points[i].y < y && this.points[j].y > y ||
-                this.points[j].y < y && this.points[i].y > y) &&
-                (this.points[i].x + (y - this.points[i].y) /
-                    (this.points[j].y - this.points[i].y) *
-                    (this.points[j].x - this.points[i].x) < x)) {
-                result = !result;
-            }
-            j = i;
-        }
-        return result;
+    Polygon.prototype.contains = function (x, y) {
+        return Utils.isInPolygon(this.points, x, y);
     };
     Polygon.prototype.upperPointY = function () {
-        var upperPointY = this.points[0].y;
-        for (var i = 0; i < this.points.length; i++) {
-            if (upperPointY > this.points[i].y) {
-                upperPointY = this.points[i].y;
-            }
-        }
-        return upperPointY;
+        return Utils.pointsUpperY(this.points);
     };
     Polygon.prototype.leftPointX = function () {
-        var leftPointX = this.points[0].x;
-        for (var i = 0; i < this.points.length; i++) {
-            if (leftPointX > this.points[i].x) {
-                leftPointX = this.points[i].x;
-            }
-        }
-        return leftPointX;
+        return Utils.pointsLeftX(this.points);
     };
     Polygon.prototype.lowerPointY = function () {
-        var lowerPointY = this.points[0].y;
-        for (var i = 0; i < this.points.length; i++) {
-            if (lowerPointY < this.points[i].y) {
-                lowerPointY = this.points[i].y;
-            }
-        }
-        return lowerPointY;
+        return Utils.pointsLowerY(this.points);
     };
     Polygon.prototype.rightPointX = function () {
-        var rightPointX = this.points[0].x;
-        rightPointX.toFixed;
-        for (var i = 0; i < this.points.length; i++) {
-            if (rightPointX < this.points[i].x) {
-                rightPointX = this.points[i].x;
-            }
-        }
-        return rightPointX;
+        return Utils.pointsRightX(this.points);
     };
     Polygon.prototype.getPointsForUpdateStatus = function () {
         var points = [];

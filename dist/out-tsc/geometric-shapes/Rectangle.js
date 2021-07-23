@@ -17,71 +17,31 @@ import { Shape } from './Shape.js';
 import { Utils } from '../Utils.js';
 var Rectangle = /** @class */ (function (_super) {
     __extends(Rectangle, _super);
-    function Rectangle(width, height) {
-        return _super.call(this, "Rectangle", Utils.getPointsForRectangle(width, height)) || this;
+    function Rectangle(shapeId, width, height) {
+        return _super.call(this, shapeId, Utils.getPointsForRectangle(width, height)) || this;
     }
-    Rectangle.prototype.drawShape = function (context) {
+    Rectangle.prototype.draw = function (context) {
         var width = this.rightPointX() - this.leftPointX();
         var height = this.lowerPointY() - this.upperPointY();
         if (this.isFill) {
-            context.fillStyle = '#FF0000';
             context.fillRect(this.leftPointX(), this.upperPointY(), width, height);
-            context.strokeRect(this.leftPointX(), this.upperPointY(), width, height);
         }
-        else {
-            context.strokeRect(this.leftPointX(), this.upperPointY(), width, height);
-        }
+        context.strokeRect(this.leftPointX(), this.upperPointY(), width, height);
     };
-    Rectangle.prototype.isInShape = function (x, y) {
-        var result = false;
-        var j = this.points.length - 1;
-        for (var i = 0; i < this.points.length; i++) {
-            if ((this.points[i].y < y && this.points[j].y > y ||
-                this.points[j].y < y && this.points[i].y > y) &&
-                (this.points[i].x + (y - this.points[i].y) /
-                    (this.points[j].y - this.points[i].y) *
-                    (this.points[j].x - this.points[i].x) < x)) {
-                result = !result;
-            }
-            j = i;
-        }
-        return result;
+    Rectangle.prototype.contains = function (x, y) {
+        return Utils.isInRectangle(this.points, x, y);
     };
     Rectangle.prototype.upperPointY = function () {
-        var upperPointY = this.points[0].y;
-        for (var i = 0; i < this.points.length; i++) {
-            if (upperPointY > this.points[i].y) {
-                upperPointY = this.points[i].y;
-            }
-        }
-        return upperPointY;
+        return Utils.pointsUpperY(this.points);
     };
     Rectangle.prototype.leftPointX = function () {
-        var leftPointX = this.points[0].x;
-        for (var i = 0; i < this.points.length; i++) {
-            if (leftPointX > this.points[i].x) {
-                leftPointX = this.points[i].x;
-            }
-        }
-        return leftPointX;
+        return Utils.pointsLeftX(this.points);
     };
     Rectangle.prototype.lowerPointY = function () {
-        var lowerPointY = this.points[0].y;
-        for (var i = 0; i < this.points.length; i++) {
-            if (lowerPointY < this.points[i].y) {
-                lowerPointY = this.points[i].y;
-            }
-        }
-        return lowerPointY;
+        return Utils.pointsLowerY(this.points);
     };
     Rectangle.prototype.rightPointX = function () {
-        var rightPointX = this.points[0].x;
-        for (var i = 0; i < this.points.length; i++) {
-            if (rightPointX < this.points[i].x) {
-                rightPointX = this.points[i].x;
-            }
-        }
-        return rightPointX;
+        return Utils.pointsRightX(this.points);
     };
     Rectangle.prototype.getPointsForUpdateStatus = function () {
         return this.points;

@@ -1,18 +1,20 @@
 var Shape = /** @class */ (function () {
-    function Shape(shapeType, points) {
-        Shape.counterShapes++;
-        this.shapeType = shapeType;
+    function Shape(shapeId, points) {
+        this.shapeId = shapeId;
         this.points = points;
         this.isFill = false;
-        this.shapeId = Shape.counterShapes;
     }
     Shape.prototype.upperPointY = function () { return null; };
     Shape.prototype.leftPointX = function () { return null; };
     Shape.prototype.lowerPointY = function () { return null; };
     Shape.prototype.rightPointX = function () { return null; };
-    Shape.prototype.drawShape = function (context) { };
-    Shape.prototype.isInShape = function (x, y) { return null; };
+    Shape.prototype.draw = function (context) { };
+    Shape.prototype.contains = function (x, y) { return null; };
     Shape.prototype.getPointsForUpdateStatus = function () { return null; };
+    Shape.prototype.fill = function (context) {
+        context.fillStyle = '#FF0000';
+        context.fill();
+    };
     Shape.prototype.updateStatusShape = function (shapes) {
         var firstFlag = false;
         ;
@@ -24,12 +26,12 @@ var Shape = /** @class */ (function () {
             var points = value.getPointsForUpdateStatus();
             if (self.shapeId != value.shapeId) {
                 for (var i = 0; i < points.length; i++) {
-                    if (self.isInShape(points[i].x, points[i].y)) {
+                    if (self.contains(points[i].x, points[i].y)) {
                         firstFlag = true;
                     }
                 }
                 for (var i = 0; i < selfPoints.length; i++) {
-                    if (value.isInShape(selfPoints[i].x, selfPoints[i].y)) {
+                    if (value.contains(selfPoints[i].x, selfPoints[i].y)) {
                         secondFlag = true;
                     }
                 }
