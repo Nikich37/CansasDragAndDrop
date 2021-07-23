@@ -3,6 +3,7 @@ import { Shape } from './Shape.js';
 import { Utils } from '../Utils.js';
 
 class Rectangle extends Shape {
+    
     constructor(width: number, height: number) {
         super("Rectangle", Utils.getPointsForRectangle(width, height));
     }

@@ -1,7 +1,7 @@
 import {Point} from './geometric-shapes/Point.js'
 
 class Utils{
-
+    
     public static getPointsForRectangle(weight: number, height: number): Point[]{
         let leftPointX: number = 0;
         let upperPointY: number = 0;

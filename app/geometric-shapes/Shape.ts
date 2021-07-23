@@ -1,6 +1,7 @@
 import { Point } from "./Point.js"
 
 abstract class Shape {
+
   public isFill: boolean;
   public shapeType: string;
   public points: Point[];
@@ -13,7 +14,6 @@ abstract class Shape {
     this.points = points;
     this.isFill = false;
     this.shapeId = Shape.counterShapes;
-
   }
 
   public upperPointY(): number { return null; }
@@ -22,6 +22,8 @@ abstract class Shape {
   public rightPointX(): number { return null; }
   public drawShape(context: CanvasRenderingContext2D) { }
   public isInShape(x: number, y: number): boolean { return null; }
+  public getPointsForUpdateStatus(): Point[] { return null; }
+
   public updateStatusShape(shapes: Shape[]) {
     let firstFlag: boolean = false;;
     let secondFlag: boolean = false;;
@@ -50,7 +52,6 @@ abstract class Shape {
       self.isFill = false;
     }
   }
-  public getPointsForUpdateStatus(): Point[] { return null; }
 }
 
 export { Shape };

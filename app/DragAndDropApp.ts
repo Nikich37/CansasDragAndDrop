@@ -64,9 +64,7 @@ class DragAndDropApp {
                 this.shapes[i].points[j].x -= deltaX;
             }
             lastLowerPointY = this.shapes[i].lowerPointY() + 20;
-
         }
-
     }
 
     private updateStatusShapes() {

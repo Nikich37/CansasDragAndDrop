@@ -8,8 +8,7 @@ var ShapesFabric = /** @class */ (function () {
         return new Rectangle(weight, height);
     };
     ShapesFabric.prototype.CreatePolygon = function (points) {
-        var polygon = new Polygon(points);
-        return polygon;
+        return new Polygon(points);
     };
     ShapesFabric.prototype.CreateCircle = function (radius) {
         return new Circle(radius);

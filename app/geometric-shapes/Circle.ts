@@ -2,7 +2,9 @@ import { Point } from './Point.js';
 import { Shape } from './Shape.js';
 
 class Circle extends Shape {
+
     private radius: number;
+
     constructor(radius: number) {
         super("Circle", [new Point(0, 0)]);
         this.radius = radius;
@@ -43,7 +45,6 @@ class Circle extends Shape {
             let y = this.points[0].y + this.radius * Math.sin(i * 2/32*Math.PI);
             points.push(new Point(x, y));
         }
-
         return points;
     }
 }

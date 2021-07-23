@@ -9,11 +9,10 @@ class ShapesFabric{
     }
 
     public CreatePolygon(points: Point[]): Polygon{
-        let polygon: Polygon = new Polygon(points);
-        return polygon;
+        return new Polygon(points);
     }
 
-    public CreateCircle(radius: number){
+    public CreateCircle(radius: number): Circle{
         return new Circle(radius);
     }
 }

@@ -89,7 +89,6 @@ class Polygon extends Shape {
         }
         return points;
     }
-    
 }
 
 export { Polygon }

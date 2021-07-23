@@ -12,6 +12,7 @@ var Shape = /** @class */ (function () {
     Shape.prototype.rightPointX = function () { return null; };
     Shape.prototype.drawShape = function (context) { };
     Shape.prototype.isInShape = function (x, y) { return null; };
+    Shape.prototype.getPointsForUpdateStatus = function () { return null; };
     Shape.prototype.updateStatusShape = function (shapes) {
         var firstFlag = false;
         ;
@@ -41,7 +42,6 @@ var Shape = /** @class */ (function () {
             self.isFill = false;
         }
     };
-    Shape.prototype.getPointsForUpdateStatus = function () { return null; };
     return Shape;
 }());
 export { Shape };

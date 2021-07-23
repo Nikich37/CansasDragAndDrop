@@ -49,58 +49,6 @@ var DragAndDropApp = /** @class */ (function () {
             this.shapes[i].updateStatusShape(this.shapes);
         }
     };
-    DragAndDropApp.prototype.IsPointInShape = function (x, y, indexShape) {
-        var result = false;
-        var finalResult = false;
-        var index = 0;
-        this.shapes.forEach(function (value) {
-            result = false;
-            var shape = value;
-            var j = shape.points.length - 1;
-            for (var i = 0; i < shape.points.length; i++) {
-                if ((indexShape != index) && (shape.points[i].y < y &&
-                    shape.points[j].y >= y || shape.points[j].y < y &&
-                    shape.points[i].y >= y) &&
-                    (shape.points[i].x + (y - shape.points[i].y) /
-                        (shape.points[j].y - shape.points[i].y) *
-                        (shape.points[j].x - shape.points[i].x) < x)) {
-                    result = !result;
-                }
-                j = i;
-            }
-            if (result) {
-                finalResult = true;
-            }
-            index++;
-        });
-        return finalResult;
-    };
-    DragAndDropApp.prototype.InWhichShape = function (x, y, indexShape) {
-        var result = false;
-        var index = 0;
-        var finalIndex = 0;
-        this.shapes.forEach(function (value) {
-            result = false;
-            var shape = value;
-            var j = shape.points.length - 1;
-            for (var i = 0; i < shape.points.length; i++) {
-                if ((indexShape != index) && (shape.points[i].y < y &&
-                    shape.points[j].y >= y || shape.points[j].y < y &&
-                    shape.points[i].y >= y) &&
-                    (shape.points[i].x + (y - shape.points[i].y) /
-                        (shape.points[j].y - shape.points[i].y) *
-                        (shape.points[j].x - shape.points[i].x) < x)) {
-                    result = !result;
-                }
-                j = i;
-            }
-            if (result) {
-                finalIndex = index;
-            }
-            index++;
-        });
-        return finalIndex;
-    };
     DragAndDropApp.prototype.IsShape = function (x, y) {
         var result = false;
         var finalResult = false;
