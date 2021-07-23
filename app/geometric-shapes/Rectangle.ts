@@ -11,10 +11,13 @@ class Rectangle extends Shape {
     public draw(context: CanvasRenderingContext2D) {
         let width: number = this.rightPointX() - this.leftPointX();
         let height: number = this.lowerPointY() - this.upperPointY();
-        if (this.isFill) {
-            context.fillRect(this.leftPointX(), this.upperPointY(), width, height);
-        }
+        context.beginPath();
+        context.rect(this.leftPointX(), this.upperPointY(), width, height);
         context.strokeRect(this.leftPointX(), this.upperPointY(), width, height);
+        if (this.isFill) {
+            this.fill(context);
+        }
+        context.closePath();
     }
 
     public contains(x: number, y: number): boolean {

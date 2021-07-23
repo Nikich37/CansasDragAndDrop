@@ -23,10 +23,13 @@ var Rectangle = /** @class */ (function (_super) {
     Rectangle.prototype.draw = function (context) {
         var width = this.rightPointX() - this.leftPointX();
         var height = this.lowerPointY() - this.upperPointY();
-        if (this.isFill) {
-            context.fillRect(this.leftPointX(), this.upperPointY(), width, height);
-        }
+        context.beginPath();
+        context.rect(this.leftPointX(), this.upperPointY(), width, height);
         context.strokeRect(this.leftPointX(), this.upperPointY(), width, height);
+        if (this.isFill) {
+            this.fill(context);
+        }
+        context.closePath();
     };
     Rectangle.prototype.contains = function (x, y) {
         return Utils.isInRectangle(this.points, x, y);
